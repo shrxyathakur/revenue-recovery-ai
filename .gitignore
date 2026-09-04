@@ -1,2 +1,3 @@
 venv/
 data/generated/
+audit_log.jsonl
