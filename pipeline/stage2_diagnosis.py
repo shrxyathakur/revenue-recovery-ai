@@ -374,7 +374,7 @@ def run_stage2_over_csv(enriched_csv_path: str) -> list[dict]:
             "window_end": row["window_end"] or None,
         }
         out = diagnose_event(event, cluster)
-        results.append({**event, **out})
+        results.append({**event, **cluster, **out})
     return results
 
 
