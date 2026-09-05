@@ -1,19 +1,18 @@
 """
 Synthetic Payment Failure Event Generator — v1
-Covers: Card, UPI (Intent), E-mandate (Registration + Subsequent)
+Methods: Card, UPI (Intent), E-mandate (Registration + Subsequent)
 
 Source of truth for error_reason / bucket / hard_decline:
   reason_bucket_map_card_upi_emandate.md (built earlier in this project,
   grounded directly against Razorpay's official docs — cards, UPI, and the
   user-provided E-mandate error-reasons PDF).
 
-IMPORTANT HONESTY NOTE (do not remove):
-  - error_source values are doc-grounded for all three methods.
-  - error_step values are doc-grounded for Card (5 steps), UPI Intent (15 steps),
+  1. error_source values are doc-grounded for all three methods.
+  2. error_step values are doc-grounded for Card (5 steps), UPI Intent (15 steps),
     and E-mandate (3 steps: payment_initiation, payment_authentication,
     payment_authorization — confirmed directly from Razorpay's docs, same
     coarse shape as Netbanking's 3-step model).
-  - Per-reason error_source/error_step assignment (which specific step a given
+  3. Per-reason error_source/error_step assignment (which specific step a given
     reason maps to) is OUR inference, not something Razorpay publishes as a
     reason->step lookup. Bucket assignment is likewise our inference on top of
     Razorpay's reason explanations, as already documented in the .md file.
@@ -24,17 +23,12 @@ import string
 import csv
 import json
 from datetime import datetime, timedelta
+random.seed(42)
 
-random.seed(42)  # reproducible for demo/eval purposes; remove or vary for stress testing
-
-# ---------------------------------------------------------------------------
-# 1. REASON TABLE — transcribed directly from reason_bucket_map_card_upi_emandate.md
-#    Fields: method, payment_phase, error_reason, bucket, hard_decline,
-#            error_source, error_step
-# ---------------------------------------------------------------------------
+# Reason Table built from a crafted 'reason_bucket_map_methods table mapping'
+# list of card, upi, emandate reasons -> method, payment_phase, error_reason, bucket, hard_decline, error_source, error_step
 
 CARD_REASONS = [
-    # reason,                              bucket,             hard_decline, source,       step
     ("authentication_failed",              "genuine_decline",  False, "customer",     "payment_authentication"),
     ("insufficient_funds",                 "genuine_decline",  False, "customer",     "payment_authorization"),
     ("incorrect_cvv",                      "genuine_decline",  False, "customer",     "payment_authentication"),
@@ -65,10 +59,6 @@ UPI_REASONS = [
     ("vpa_resolution_failed",              "uncertain",        False, "network",          "payment_creation"),
 ]
 
-# E-mandate: shared (both phases), registration-only, subsequent-only
-# error_step now grounded against the confirmed 3-step flow (payment_initiation /
-# payment_authentication / payment_authorization). Per-reason step assignment
-# is our inference on top of that confirmed list, same as Card/UPI.
 EMANDATE_SHARED = [
     ("bank_account_invalid",           "genuine_decline", True,  "issuer_bank", "payment_authorization"),
     ("bank_account_validation_failed", "uncertain",        False, "gateway",     "payment_authentication"),
@@ -83,7 +73,7 @@ EMANDATE_SHARED = [
     ("server_error",                   "bank_outage",      False, "internal",    "payment_authorization"),
     ("transaction_limit_exceeded",     "genuine_decline", True,  "issuer_bank", "payment_authorization"),
 ]
-
+#two phases/types for an emandate failure
 EMANDATE_REGISTRATION_ONLY = [
     ("already_declined",                       "genuine_decline", True,  "network",     "payment_authentication"),
     ("authentication_failed",                  "genuine_decline", False, "customer",    "payment_authentication"),
@@ -111,7 +101,7 @@ EMANDATE_SUBSEQUENT_ONLY = [
 ]
 
 def build_reason_table():
-    """Flatten all method/phase reason lists into one uniform list of dicts."""
+    # all reason lists -> 1 list of dictionary
     table = []
     for reason, bucket, hd, source, step in CARD_REASONS:
         table.append({"method": "card", "payment_phase": None, "error_reason": reason,
