@@ -23,6 +23,57 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import audit_trail
 
 
+def build_revenue_report(hard_decline_csv: str = "data/generated/stage0_exited_hard_decline.csv",
+                          final_actions_csv: str = "data/generated/stage4_final_actions.csv") -> dict:
+    """
+    Computes real revenue figures from the amount field already present in
+    the pipeline's data — not fabricated, not estimated. Grouped by currency
+    since the synthetic data isn't guaranteed single-currency.
+
+    Hard decline amount = permanently unrecoverable, exited at Stage 0.
+    Addressable amount = reached Stage 1-4, i.e. genuinely in play for recovery.
+    Within addressable: split by whether Stage 3/4's final action was an
+    active recovery attempt (customer_retry_prompt, scheduled_retry,
+    single_delayed_retry) vs held/escalated (escalate_manual_review,
+    hold_for_manual_review, throttled_hold) — the latter isn't "lost",
+    it's deliberately not auto-retried, which is a different claim.
+    """
+    import csv as csv_module
+    from collections import defaultdict
+
+    ACTIVE_RECOVERY_ACTIONS = {"customer_retry_prompt", "scheduled_retry", "single_delayed_retry"}
+    HELD_ACTIONS = {"escalate_manual_review", "hold_for_manual_review", "throttled_hold"}
+
+    def _sum_by_currency(rows):
+        totals = defaultdict(float)
+        for r in rows:
+            totals[r.get("currency", "UNKNOWN")] += float(r["amount"])
+        return dict(totals)
+
+    hard_decline_rows = []
+    if os.path.exists(hard_decline_csv):
+        with open(hard_decline_csv, encoding="utf-8") as f:
+            hard_decline_rows = list(csv_module.DictReader(f))
+
+    final_rows = []
+    if os.path.exists(final_actions_csv):
+        with open(final_actions_csv, encoding="utf-8") as f:
+            final_rows = list(csv_module.DictReader(f))
+
+    active_rows = [r for r in final_rows if r["recovery_action"] in ACTIVE_RECOVERY_ACTIONS]
+    held_rows = [r for r in final_rows if r["recovery_action"] in HELD_ACTIONS]
+
+    return {
+        "hard_decline_amount_by_currency": _sum_by_currency(hard_decline_rows),
+        "addressable_amount_by_currency": _sum_by_currency(final_rows),
+        "routed_to_active_recovery_by_currency": _sum_by_currency(active_rows),
+        "held_or_escalated_by_currency": _sum_by_currency(held_rows),
+        "addressable_transaction_count": len(final_rows),
+        "active_recovery_transaction_count": len(active_rows),
+        "held_or_escalated_transaction_count": len(held_rows),
+    }
+
+
 def build_report(log_path: str = "audit_log.jsonl") -> dict:
     all_records = audit_trail.read_events(log_path=log_path)
 
@@ -67,6 +118,7 @@ def build_report(log_path: str = "audit_log.jsonl") -> dict:
             "trips_by_guardrail": dict(guardrail_trips),
             "overridden_event_ids_by_guardrail": {k: v for k, v in guardrail_detail.items()},
         },
+        "revenue_summary": build_revenue_report(),
     }
 
 
@@ -93,6 +145,16 @@ def print_human_readable(report: dict) -> None:
     print(f"\n--- Stage 4 Guardrail Interventions ---")
     print(f"Total overrides: {s4['total_overrides']}")
     print(f"Trips by guardrail: {s4['trips_by_guardrail']}")
+
+    rev = report["revenue_summary"]
+    print(f"\n--- Revenue Summary (real amounts from pipeline data) ---")
+    print(f"Hard decline (permanently unrecoverable, exited Stage 0): {rev['hard_decline_amount_by_currency']}")
+    print(f"Addressable (reached Stage 1-4): {rev['addressable_amount_by_currency']} "
+          f"across {rev['addressable_transaction_count']} transactions")
+    print(f"  -> Routed to active recovery: {rev['routed_to_active_recovery_by_currency']} "
+          f"({rev['active_recovery_transaction_count']} transactions)")
+    print(f"  -> Held / escalated (deliberately not auto-retried): {rev['held_or_escalated_by_currency']} "
+          f"({rev['held_or_escalated_transaction_count']} transactions)")
     print("=" * 70)
 
 
