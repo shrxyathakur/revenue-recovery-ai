@@ -41,14 +41,9 @@ Start the Downtime API mock server first, in its own terminal:
 python .\mock-server\downtime_mock_server.py
 ```
  
-Then, from the repo root, run each stage in order:
+Then, from the repo root, run all stages sequentially within a pipeline:
 ```
-python .\pipeline\stage0_hard_decline.py
-python .\pipeline\stage1_detection.py
-python .\pipeline\stage2_diagnosis.py
-python .\pipeline\stage3_recovery.py
-python .\pipeline\stage4_guardrails.py
-python .\pipeline\stage5_audit_finalization.py
+python run_pipeline.py
 ```
  
 Synthetic test data is generated with:
