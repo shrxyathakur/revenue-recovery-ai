@@ -227,26 +227,40 @@ def _build_user_prompt(event: dict, cluster: ClusterContext) -> str:
 
 
 def _llm_diagnose_live(event: dict, cluster: ClusterContext) -> dict:
-    # Requires: pip install groq --break-system-packages
-    # Requires: GROQ_API_KEY set (in .env or the real environment)
-    from groq import Groq
+  # Requires: pip install groq --break-system-packages
+  # Requires: GROQ_API_KEY set (in .env or the real environment)
+  import json
+  from groq import Groq
 
-    client = Groq(api_key=os.environ["GROQ_API_KEY"])
+  client = Groq(api_key=os.environ["GROQ_API_KEY"])
+
+  system_message = (
+      f"{SYSTEM_PROMPT}\n\nIMPORTANT: You must respond with a single, valid JSON"
+      " object ONLY. Do not include markdown blocks, preamble, or commentary."
+  )
+
+  try:
     response = client.chat.completions.create(
         model=MODEL_NAME,
         messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": system_message},
             {"role": "user", "content": _build_user_prompt(event, cluster)},
         ],
         temperature=0,
-        max_tokens=500,
+        max_tokens=1000,
         response_format={"type": "json_object"},
     )
+
     text = response.choices[0].message.content.strip()
     text = text.replace("```json", "").replace("```", "").strip()
-    parsed = json.loads(text)
-    return parsed
+    return json.loads(text)
 
+  except Exception as e:
+    print(
+        f"\n[WARN] Live Groq call failed ({e}). Falling back to mock diagnosis"
+        " for this event."
+    )
+    return _llm_diagnose_mock(event, cluster)
 
 def _llm_diagnose_mock(event: dict, cluster: ClusterContext) -> dict:
     """
