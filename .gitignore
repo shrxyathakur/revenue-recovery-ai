@@ -2,3 +2,4 @@ venv/
 data/generated/
 audit_log.jsonl
 __pycache__/
+.env

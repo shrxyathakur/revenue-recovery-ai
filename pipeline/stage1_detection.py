@@ -71,7 +71,7 @@ def _parse_dt(iso_str: str) -> datetime:
 
 
 def load_events(passed_csv_path: str) -> list[dict]:
-    with open(passed_csv_path) as f:
+    with open(passed_csv_path, encoding="utf-8") as f:
         events = list(csv.DictReader(f))
     for e in events:
         e["timestamp"] = int(e["timestamp"])
@@ -219,12 +219,12 @@ if __name__ == "__main__":
     enriched, cluster_summaries = run_stage1(args.input, args.window_minutes, args.downtime_api_base)
 
     fieldnames = list(enriched[0].keys())
-    with open(args.output_events, "w", newline="") as f:
+    with open(args.output_events, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(enriched)
 
-    with open(args.output_clusters, "w") as f:
+    with open(args.output_clusters, "w", encoding="utf-8") as f:
         json.dump(cluster_summaries, f, indent=2)
 
     solo = sum(1 for e in enriched if e["cluster_id"] is None)

@@ -147,7 +147,7 @@ def _apply_entity_retry_guardrail(rows: list[dict], check: dict) -> list[dict]:
 
 
 def run_stage4(recovery_csv_path: str, entity_retry_cap: int = 30) -> tuple[list[dict], dict]:
-    with open(recovery_csv_path) as f:
+    with open(recovery_csv_path, encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
@@ -183,12 +183,12 @@ if __name__ == "__main__":
     rows, report = run_stage4(args.input, entity_retry_cap=args.entity_retry_cap)
 
     fieldnames = list(rows[0].keys())
-    with open(args.output, "w", newline="") as f:
+    with open(args.output, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
 
-    with open(args.report_output, "w") as f:
+    with open(args.report_output, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
 
     print(f"Total events: {len(rows)}")

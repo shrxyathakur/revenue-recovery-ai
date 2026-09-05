@@ -114,7 +114,7 @@ def decide_recovery_action(diagnosis: dict, cluster: dict) -> dict:
 
 
 def run_stage3_over_csv(diagnosed_csv_path: str) -> list[dict]:
-    with open(diagnosed_csv_path) as f:
+    with open(diagnosed_csv_path, encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
 
     results = []
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     results = run_stage3_over_csv(args.input)
 
     fieldnames = list(results[0].keys())
-    with open(args.output, "w", newline="") as f:
+    with open(args.output, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(results)

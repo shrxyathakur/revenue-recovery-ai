@@ -20,7 +20,7 @@ def log_event(stage: str, event_id: str, data: dict, log_path: str = DEFAULT_LOG
         "event_id": event_id,
         "data": data,
     }
-    with open(log_path, "a") as f:
+    with open(log_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
 
 
@@ -29,7 +29,7 @@ def read_events(stage: str = None, event_id: str = None, log_path: str = DEFAULT
     if not os.path.exists(log_path):
         return []
     results = []
-    with open(log_path) as f:
+    with open(log_path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:

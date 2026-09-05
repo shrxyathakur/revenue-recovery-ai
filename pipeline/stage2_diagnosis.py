@@ -36,6 +36,14 @@ import os
 import sys
 from typing import Optional, TypedDict
 
+# Load ANTHROPIC_API_KEY and STAGE2_LLM_MODE from a .env file at the repo
+# root, if one exists. Requires: pip install python-dotenv
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
+except ImportError:
+    pass  # dotenv not installed — fall back to real environment variables only
+
 # Make the repo root importable regardless of the current working directory —
 # audit_trail.py lives at the repo root, one level up from pipeline/, and
 # `python .\pipeline\stage2_diagnosis.py` only puts pipeline/ itself on
@@ -182,7 +190,7 @@ class ClusterContext(TypedDict, total=False):
 # Path B — LLM reasoning, called only for table-uncertain / table-miss cases.
 # ---------------------------------------------------------------------------
 
-MODEL_NAME = "claude-sonnet-5"
+MODEL_NAME = "openai/gpt-oss-120b"
 
 SYSTEM_PROMPT = """You are the Stage 2 diagnosis component of a payment degradation \
 detection pipeline. You are called ONLY for error_reasons that a deterministic \
@@ -219,18 +227,22 @@ def _build_user_prompt(event: dict, cluster: ClusterContext) -> str:
 
 
 def _llm_diagnose_live(event: dict, cluster: ClusterContext) -> dict:
-    # Requires: pip install anthropic --break-system-packages
-    # Requires: ANTHROPIC_API_KEY set in environment
-    import anthropic
+    # Requires: pip install groq --break-system-packages
+    # Requires: GROQ_API_KEY set (in .env or the real environment)
+    from groq import Groq
 
-    client = anthropic.Anthropic()
-    response = client.messages.create(
+    client = Groq(api_key=os.environ["GROQ_API_KEY"])
+    response = client.chat.completions.create(
         model=MODEL_NAME,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": _build_user_prompt(event, cluster)},
+        ],
+        temperature=0,
         max_tokens=500,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": _build_user_prompt(event, cluster)}],
+        response_format={"type": "json_object"},
     )
-    text = response.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     text = text.replace("```json", "").replace("```", "").strip()
     parsed = json.loads(text)
     return parsed
@@ -351,7 +363,7 @@ def run_stage2_over_csv(enriched_csv_path: str) -> list[dict]:
     """
     import csv as csv_module
 
-    with open(enriched_csv_path) as f:
+    with open(enriched_csv_path, encoding="utf-8") as f:
         rows = list(csv_module.DictReader(f))
 
     results = []
@@ -391,7 +403,7 @@ if __name__ == "__main__":
     results = run_stage2_over_csv(args.input)
 
     fieldnames = list(results[0].keys())
-    with open(args.output, "w", newline="") as f:
+    with open(args.output, "w", newline="", encoding="utf-8") as f:
         writer = csv_module.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(results)

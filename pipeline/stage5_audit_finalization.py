@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     report = build_report(args.log_path)
 
-    with open(args.output, "w") as f:
+    with open(args.output, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
 
     print_human_readable(report)

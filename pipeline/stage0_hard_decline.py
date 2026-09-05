@@ -27,7 +27,7 @@ def load_lookup_table(reason_table_path):
     Builds a dict keyed on (method, payment_phase, error_reason) -> hard_decline bool.
     This is the entire rule set Stage 0 runs against.
     """
-    with open(reason_table_path) as f:
+    with open(reason_table_path, encoding="utf-8") as f:
         rows = json.load(f)
 
     lookup = {}
@@ -64,7 +64,7 @@ def apply_stage0(event, lookup):
 def run_stage0_over_dataset(events_csv_path, reason_table_path):
     lookup = load_lookup_table(reason_table_path)
 
-    with open(events_csv_path) as f:
+    with open(events_csv_path, encoding="utf-8") as f:
         events = list(csv.DictReader(f))
 
     exited = []
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     # Stage 0's decision should agree with it 100% of the time, since both
     # ultimately derive from the same reason table. If they disagree, that's
     # a real bug worth catching, not something to gloss over.
-    with open("data/generated/synthetic_payment_events.csv") as f:
+    with open("data/generated/synthetic_payment_events.csv", encoding="utf-8") as f:
         all_events = list(csv.DictReader(f))
     lookup = load_lookup_table("data/generated/reason_table.json")
 
@@ -118,13 +118,13 @@ if __name__ == "__main__":
 
     # Write outputs
     if exited:
-        with open("data/generated/stage0_exited_hard_decline.csv", "w", newline="") as f:
+        with open("data/generated/stage0_exited_hard_decline.csv", "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=list(exited[0].keys()))
             writer.writeheader()
             writer.writerows(exited)
 
     if passed:
-        with open("data/generated/stage0_passed_to_stage1.csv", "w", newline="") as f:
+        with open("data/generated/stage0_passed_to_stage1.csv", "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=list(passed[0].keys()))
             writer.writeheader()
             writer.writerows(passed)

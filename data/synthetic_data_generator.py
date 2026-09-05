@@ -294,15 +294,15 @@ if __name__ == "__main__":
     events, outage_manifest = generate_dataset(num_background=400, num_outage_clusters=4)
 
     fieldnames = list(events[0].keys())
-    with open("data/generated/synthetic_payment_events.csv", "w", newline="") as f:
+    with open("data/generated/synthetic_payment_events.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(events)
 
-    with open("data/generated/outage_manifest.json", "w") as f:
+    with open("data/generated/outage_manifest.json", "w", encoding="utf-8") as f:
         json.dump(outage_manifest, f, indent=2)
 
-    with open("data/generated/reason_table.json", "w") as f:
+    with open("data/generated/reason_table.json", "w", encoding="utf-8") as f:
         json.dump(REASON_TABLE, f, indent=2)
 
     # Summary stats for a sanity check
