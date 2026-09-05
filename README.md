@@ -29,7 +29,7 @@ Most reasons resolve to a bucket unambiguously just from Razorpay's own document
 ```
 3. (Optional, for live LLM diagnosis) create a `.env` or set an environment variable:
 ```
-   ANTHROPIC_API_KEY=your_key
+   GROQ_API_KEY=your_key
    STAGE2_LLM_MODE=live
 ```
    Without this, Stage 2 runs in `mock` mode by default — deterministic, no API calls, useful for development and demoing without burning tokens.
@@ -57,25 +57,28 @@ python .\data\synthetic_data_generator.py
 ```
  
 ## Project structure
- 
 ```
 rev-rec-ai/
 ├── data/
-│   ├── synthetic_data_generator.py
-│   └── generated/              # pipeline outputs, not committed
+│   ├── generated/              
+│   └── synthetic_data_generator.py 
 ├── mock-server/
-│   └── downtime_mock_server.py
+│   └── downtime_mock_server.py  
 ├── pipeline/
-│   ├── stage0_hard_decline.py
-│   ├── stage1_detection.py
-│   ├── stage2_diagnosis.py
-│   ├── stage3_recovery.py
-│   ├── stage4_guardrails.py
-│   └── stage5_audit_finalization.py
-├── audit_trail.py
-└── requirements.txt
-```
- 
+│   ├── stage0_hard_decline.py    
+│   ├── stage1_detection.py      
+│   ├── stage2_diagnosis.py        
+│   ├── stage3_recovery.py        
+│   ├── stage4_guardrails.py       
+│   └── stage5_audit_finalization.py 
+├── .env                          
+├── .gitignore                    
+├── audit_log.jsonl               
+├── audit_trail.py                 
+├── README.md                      
+├── requirements.txt              
+└── run_pipeline.py               
+ ```
 ## Known limitations
  
 - UPI Category B VPA handles (e.g. `@paytm`, `@ybl`) resolve only to a PSP, not the underlying bank — these events cluster on reason/timing alone, at coarser resolution than Card/E-mandate.
