@@ -1,0 +1,623 @@
+[
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "authentication_failed",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "insufficient_funds",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "incorrect_cvv",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "payment_cancelled",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "card_not_enrolled",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "card_enrollment_check"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "card_disabled_for_online_payments",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "card_enrollment_check"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "debit_instrument_inactive",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "card_enrollment_check"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "debit_instrument_blocked",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "card_expired",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "customer",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "transaction_limit_exceeded",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "bank_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "gateway_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "payment_risk_check_failed",
+    "bucket": "fraud_fp",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "card_declined",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "card",
+    "payment_phase": null,
+    "error_reason": "payment_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "insufficient_funds",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_debit_response"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "payment_cancelled",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "invalid_vpa",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "customer",
+    "error_step": "payment_creation"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "bank_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_debit_response"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "gateway_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_request"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "credit_failed",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "beneficiary_bank",
+    "error_step": "payment_credit_response"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "payment_collect_request_expired",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "payment_declined",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_debit_response"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "payment_timed_out",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "network",
+    "error_step": "payment_status_response"
+  },
+  {
+    "method": "upi",
+    "payment_phase": null,
+    "error_reason": "vpa_resolution_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "network",
+    "error_step": "payment_creation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "bank_account_invalid",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "bank_account_invalid",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "bank_account_validation_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "bank_account_validation_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "bank_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "bank_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "debit_instrument_blocked",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "debit_instrument_blocked",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "debit_instrument_inactive",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "debit_instrument_inactive",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "gateway_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "gateway_technical_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "insufficient_funds",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "insufficient_funds",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "payment_cancelled",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "payment_cancelled",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "payment_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "payment_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "payment_timed_out",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "payment_timed_out",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "server_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "internal",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "server_error",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "internal",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "transaction_limit_exceeded",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "transaction_limit_exceeded",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "already_declined",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "network",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "authentication_failed",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "card_expired",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "card_number_invalid",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "customer",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "duplicate_request",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "gateway",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "incorrect_card_expiry_date",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "incorrect_cvv",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "incorrect_otp",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "incorrect_pin",
+    "bucket": "genuine_decline",
+    "hard_decline": false,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "joint_account_not_allowed",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "otp_attempts_exceeded",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "payment_pending_approval",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "payment_risk_check_failed",
+    "bucket": "fraud_fp",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "registration",
+    "error_reason": "user_not_registered_for_netbanking",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "customer",
+    "error_step": "payment_authentication"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "incorrect_ifsc",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "customer",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "input_validation_failed",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "business",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "invalid_amount",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "business",
+    "error_step": "payment_initiation"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "mandate_not_active",
+    "bucket": "genuine_decline",
+    "hard_decline": true,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "payment_declined",
+    "bucket": "uncertain",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  },
+  {
+    "method": "emandate",
+    "payment_phase": "subsequent",
+    "error_reason": "payment_mandate_not_active",
+    "bucket": "bank_outage",
+    "hard_decline": false,
+    "error_source": "issuer_bank",
+    "error_step": "payment_authorization"
+  }
+]
